@@ -1,0 +1,25 @@
+{
+  "name": "notepad-store-playwright",
+  "version": "1.0.0",
+  "description": "https://github.com/lunin-vadim/qa-web?tab=readme-ov-file",
+  "main": "index.js",
+  "scripts": {
+    "run-tests-in-headless": "npx playwright test",
+    "run-tests-in-ui": "npx playwright test --ui",
+    "show-report": "npx playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Irina-Dovgyalo/Notepad-Store-Playwright.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Irina-Dovgyalo/Notepad-Store-Playwright/issues"
+  },
+  "homepage": "https://github.com/Irina-Dovgyalo/Notepad-Store-Playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.45.2",
+    "@types/node": "^20.14.10"
+  }
+}
