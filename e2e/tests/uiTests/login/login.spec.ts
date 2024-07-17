@@ -3,7 +3,7 @@ import {LoginPo} from '../../../pages/login/login.po';
 
 let loginPo: LoginPo;
 
-test.describe('Login Page @1', () => {
+test.describe('@Regression: Login Page', () => {
   test.beforeEach(`The login page is opened`, async ({ page }) => {
     loginPo = new LoginPo(page);
     await loginPo.openLoginPage('/login');
