@@ -6,6 +6,7 @@
   "scripts": {
     "run-tests-in-headless": "npx playwright test",
     "run-tests-in-ui": "npx playwright test --ui",
+    "run-tests-by-tag": "npx playwright test --grep @1",
     "show-report": "npx playwright show-report"
   },
   "repository": {
@@ -20,6 +21,8 @@
   "homepage": "https://github.com/Irina-Dovgyalo/Notepad-Store-Playwright#readme",
   "devDependencies": {
     "@playwright/test": "^1.45.2",
-    "@types/node": "^20.14.10"
+    "@types/node": "^20.14.10",
+    "playwright": "^1.16.1",
+    "typescript": "^4.4.4"
   }
 }
