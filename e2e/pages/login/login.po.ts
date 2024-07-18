@@ -12,9 +12,9 @@ export class LoginPo extends BasePo {
 
   constructor(page: Page) {
     super(page);
-    this.loginInput = {value: page.getByPlaceholder('Логин клиента'), definition: 'Login Input Field'};
-    this.passwordInput = {value: page.getByPlaceholder('Пароль клиента'), definition: 'Password Input Field'};
-    this.submitButton = {value: page.locator('#login-form div').filter({ hasText: 'Вход' }), definition: 'Submit Button'};
+    this.loginInput = {value: page.locator(`#login-form #loginform-username`), definition: 'Login Input Field'};
+    this.passwordInput = {value: page.locator(`#login-form #loginform-password`), definition: 'Password Input Field'};
+    this.submitButton = {value: page.locator(`#login-form button[name="login-button"]`), definition: 'Submit Button'};
     this.loginHeading = {value: page.getByRole('heading', { name: 'Авторизация' }), definition: 'Login Heading'};
   }
 
@@ -27,8 +27,8 @@ export class LoginPo extends BasePo {
   }
 
   public async loginToNotepadStore(login: string, password: string): Promise<void> {
-    await Actions.typeTextInLocatorSequentiallyAndPressEnter(this.loginInput, login);
-    await Actions.typeTextInLocatorSequentiallyAndPressEnter(this.passwordInput, password);
+    await Actions.typeTextInLocatorSequentially(this.loginInput, login);
+    await Actions.typeTextInLocatorSequentially(this.passwordInput, password);
     await Actions.clickByLocator(this.submitButton);
   }
 }
