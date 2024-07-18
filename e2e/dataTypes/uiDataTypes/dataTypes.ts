@@ -9,9 +9,11 @@ export interface IUserDataType {
   password: string;
 }
 
-export interface ILoginDataType {
-  loginTitle: string;
-  loginHeading: string;
+export interface IProductDataType {
+  index: number;
+  productType: string;
+  productName: string;
+  productPrice: number;
 }
 
 export interface ILocator {

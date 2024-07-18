@@ -19,7 +19,7 @@ test.describe('Login Page', () => {
   test(`The Notepad Store login page title is displayed correctly`, async ({ page }) => {
     loginPo = new LoginPo(page);
 
-    expect(await page.title()).toBe(loginPo.dataProvider.getLoginTestData().loginTitle);
+    expect(await page.title()).toBe(/Авторизация/);
   });
 
   test(`The Notepad Store login page heading text is displayed correctly`, async ({ page }) => {
