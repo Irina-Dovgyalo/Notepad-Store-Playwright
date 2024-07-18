@@ -22,39 +22,42 @@ test.describe('Shopping Cart', () => {
     await StepUtils.addLog(`The user types the name '${userData.username}' and password '${userData.password}'`);
     await loginPo.loginToNotepadStore(userData.username, userData.password);
 
-    await expect(await shoppingCartPo.getSiteNotepadItemElement()).toBeVisible();
-    await expect(await shoppingCartPo.getShoppingCartElement()).toBeVisible();
+    await expect(await shoppingCartPo.getProductItemElement()).toBeVisible();
+    await expect(await shoppingCartPo.getShoppingCartIconElement()).toBeVisible();
   });
 
   test.afterEach(`The Notepad Store login page is closed`, async ({ page }) => {
     await page.close();
   });
 
-  test(`@Bug-1 @Test-1 @Regression - The user can open an empty shopping cart`, async ({ page }) => {
+  test(`@Bug-1 @Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
-    await StepUtils.addLog(`The user clicks on the shopping cart icon`);
+    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
     await shoppingCartPo.clickOnShoppingCartIcon();
 
     await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
   });
 
-  test(`@Test-2 @Regression - The user can open a cart with one item without a discount`, async ({ page }) => {
+  test(`@Test-2 @Regression - The user can open a Shopping cart with one item without a discount`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData();
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the notepad cart without discount`);
-    await shoppingCartPo.clickOnButtonByNameInCardWithoutDiscount(ButtonsEnum.Buy);
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount`);
+    await shoppingCartPo.clickOnButtonByNameInProductItemWithoutDiscount(ButtonsEnum.Buy);
 
-    await expect(await shoppingCartPo.getShoppingCartCountIconNumber()).toEqual(1);
+    await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(1);
 
-    await StepUtils.addLog(`The user clicks on the shopping cart icon`);
+    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
     await shoppingCartPo.clickOnShoppingCartIcon();
 
     await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
     await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
-    await expect(await shoppingCartPo.getShoppingCartItemPriceNumber()).toEqual(productData.productPrice);
+    await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(productData.productPrice);
     await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
+
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
+    await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
   });
 });

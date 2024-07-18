@@ -12,8 +12,7 @@ export class ShoppingCartPo extends BasePo {
   private readonly shoppingCartItemTitle: ILocator;
   private readonly shoppingCartItemPrice: ILocator;
   private readonly shoppingCartTotalPrice: ILocator;
-  private readonly shoppingCartGoToBasketButton: ILocator;
-  private readonly siteNotepadItem: ILocator;
+  private readonly productItem: ILocator;
 
   constructor(page: Page) {
     super(page);
@@ -23,30 +22,34 @@ export class ShoppingCartPo extends BasePo {
     this.shoppingCartItemTitle = {value: page.locator(`#basketContainer .basket-item-title`), definition: 'Shopping Cart Item Title'};
     this.shoppingCartItemPrice = {value: page.locator(`#basketContainer .basket-item-price`), definition: 'Shopping Cart Item Price'};
     this.shoppingCartTotalPrice = {value: page.locator(`#basketContainer .basket_price`), definition: 'Shopping Cart Total Price'};
-    this.shoppingCartGoToBasketButton = {value: page.locator(`#basketContainer a[role="button"][href="/basket"]`), definition: 'Shopping Cart Go To Basket Button'};
-    this.siteNotepadItem = {value: page.locator(`div.site-index div.note-item`), definition: 'Site Notepad Item'};
+    this.productItem = {value: page.locator(`div.site-index div.note-item`), definition: 'Product Item'};
   }
 
-  private buttonByNameAndIndexInCardWithDiscount(name: string, index: number = 1): ILocator {
+  private buttonByNameAndIndexInProductItemWithDiscount(name: string, index: number = 1): ILocator {
     return {
       value: this.page.locator(
         `(//div[(contains(@class,'wrap-ribbon')) and not(contains(@class,'d-none'))]/parent::div/following-sibling::div/button[text()='${name}'])[${index}]`),
-      definition: `Button By Name '${name}' In Card With Discount`
+      definition: `Button By Name '${name}' In Product Item With Discount`
     }
   };
 
-  private buttonByNameAndIndexInCardWithoutDiscount(name: string, index: number = 1): ILocator {
+  private buttonByNameAndIndexInProductItemWithoutDiscount(name: string, index: number = 1): ILocator {
     return {
       value: this.page.locator(`(//div[(contains(@class,'wrap-ribbon d-none'))]/parent::div/following-sibling::div/button[text()='${name}'])[${index}]`),
-      definition: `Button By Name '${name}' In Card Without Discount`
+      definition: `Button By Name '${name}' In Product Item Without Discount`
     }
   }
 
-  public async getSiteNotepadItemElement(): Promise<Locator> {
-    return await ElementUtils.getElementByLocator(this.siteNotepadItem, 0);
+  private shoppingCartButtonByName(name: string): ILocator {
+    return {value: this.page.locator(`//a[contains(text(), '${name}')]`), definition: `Shopping Cart Button By Name '${name}'`};
   }
 
-  public async getShoppingCartElement(): Promise<Locator> {
+
+  public async getProductItemElement(): Promise<Locator> {
+    return await ElementUtils.getElementByLocator(this.productItem, 0);
+  }
+
+  public async getShoppingCartIconElement(): Promise<Locator> {
     return await ElementUtils.getElementByLocator(this.shoppingCartIcon);
   }
 
@@ -54,7 +57,7 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getElementByLocator(this.shoppingCartContainer);
   }
 
-  public async getShoppingCartCountIconNumber(): Promise<number> {
+  public async getShoppingCartCountIconValue(): Promise<number> {
     return +(await ElementUtils.getTextByLocator(this.shoppingCartCountIcon));
   }
 
@@ -62,7 +65,7 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getElementByLocator(this.shoppingCartItemTitle);
   }
 
-  public async getShoppingCartItemPriceNumber(): Promise<number> {
+  public async getShoppingCartItemPriceValue(): Promise<number> {
     return +StringUtils.getMatchStringByRegExp(await ElementUtils.getTextByLocator(this.shoppingCartItemPrice), /\d+/);
   }
 
@@ -74,12 +77,16 @@ export class ShoppingCartPo extends BasePo {
     await Actions.clickByLocator(this.shoppingCartIcon);
   }
 
-  public async clickOnButtonByNameInCardWithDiscount(name: string): Promise<void> {
-    await Actions.clickByLocator(this.buttonByNameAndIndexInCardWithDiscount(name));
+  public async clickOnButtonByNameInProductItemWithDiscount(name: string): Promise<void> {
+    await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithDiscount(name));
   }
 
-  public async clickOnButtonByNameInCardWithoutDiscount(name: string): Promise<void> {
-    await Actions.clickByLocator(this.buttonByNameAndIndexInCardWithoutDiscount(name));
+  public async clickOnButtonByNameInProductItemWithoutDiscount(name: string): Promise<void> {
+    await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithoutDiscount(name));
     await this.page.waitForTimeout(1000);
+  }
+
+  public async clickOnShoppingCartButtonByName(name: string): Promise<void> {
+    await Actions.clickByLocator(this.shoppingCartButtonByName(name));
   }
 }
