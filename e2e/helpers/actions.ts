@@ -5,10 +5,10 @@ import {ElementUtils} from './elementUtils';
 export class Actions {
   private static timeout: 2000;
 
-  static async clickByLocator(locator: ILocator, timeout: number = this.timeout, index: number = 0): Promise<void> {
+  static async clickByLocator(locator: ILocator, index: number = 0, options?: {}): Promise<void> {
     const pageElement: Locator = await ElementUtils.getElementByLocator(locator, index);
     await pageElement.click();
-    await pageElement.waitFor({timeout: timeout});
+    await pageElement.waitFor(options);
   }
 
   static async pressEnterByLocator(locator: ILocator, index: number = 0): Promise<void> {

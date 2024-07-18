@@ -1,5 +1,5 @@
 export interface IUrlDataType {
-  notesPointSchoolPageUrl: string;
+  uiNotesPointSchool: string;
 }
 
 export interface IUserDataType {

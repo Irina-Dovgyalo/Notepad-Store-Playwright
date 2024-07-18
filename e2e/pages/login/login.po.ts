@@ -29,6 +29,6 @@ export class LoginPo extends BasePo {
   public async loginToNotepadStore(login: string, password: string): Promise<void> {
     await Actions.typeTextInLocatorSequentially(this.loginInput, login);
     await Actions.typeTextInLocatorSequentially(this.passwordInput, password);
-    await Actions.clickByLocator(this.submitButton);
+    await Actions.clickByLocator(this.submitButton, 0, {state: 'hidden'});
   }
 }

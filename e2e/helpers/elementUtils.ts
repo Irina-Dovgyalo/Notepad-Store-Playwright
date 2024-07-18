@@ -26,7 +26,7 @@ export class ElementUtils {
 
       return pageElement;
     } catch (e) {
-      throw new Error(`${e}. Unable to get locator`);
+      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
     }
   }
 }
