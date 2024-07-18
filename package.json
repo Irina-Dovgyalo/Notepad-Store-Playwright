@@ -6,7 +6,7 @@
   "scripts": {
     "run-tests-in-headless": "npx playwright test",
     "run-tests-in-ui": "npx playwright test --ui",
-    "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Test-2\"",
+    "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Test-4\"",
     "run-tests-by-tag": "npx playwright test --grep \"@Test-3\"",
     "show-report": "npx playwright show-report"
   },

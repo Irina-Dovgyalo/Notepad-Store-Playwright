@@ -44,6 +44,10 @@ export class ShoppingCartPo extends BasePo {
     return {value: this.page.locator(`//a[contains(text(), '${name}')]`), definition: `Shopping Cart Button By Name '${name}'`};
   }
 
+  private productCartButtonByName(name: string): ILocator {
+    return {value: this.page.locator(`//div[@class="note-list row"]//button[text()="${name}"]`), definition: `Product Cart Button By Name '${name}'`};
+  }
+
 
   public async getProductItemElement(): Promise<Locator> {
     return await ElementUtils.getElementByLocator(this.productItem, 0);
@@ -85,6 +89,16 @@ export class ShoppingCartPo extends BasePo {
   public async clickOnButtonByNameInProductItemWithoutDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithoutDiscount(name));
     await this.page.waitForTimeout(1000);
+  }
+
+  public async clickOnProductCartButtonByNameAndByCount(name: string, count: number): Promise<void> {
+    let itemCount: number = 0;
+
+    do {
+      await Actions.clickByLocator(this.productCartButtonByName(name), itemCount);
+      await this.page.waitForTimeout(500);
+      itemCount++;
+    } while ((itemCount < count));
   }
 
   public async clickOnShoppingCartButtonByName(name: string): Promise<void> {

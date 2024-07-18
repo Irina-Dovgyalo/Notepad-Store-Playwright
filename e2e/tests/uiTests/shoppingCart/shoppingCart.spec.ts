@@ -30,7 +30,7 @@ test.describe('Shopping Cart', () => {
     await page.close();
   });
 
-  test(`@Bug-1 @Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
+  test(`@Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
@@ -80,6 +80,25 @@ test.describe('Shopping Cart', () => {
     await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
     await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(productData.productPrice);
     await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
+
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
+    await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+
+    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+  });
+
+  test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 different products`, async ({ page }) => {
+    shoppingCartPo = new ShoppingCartPo(page);
+
+    await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
+    await shoppingCartPo.clickOnProductCartButtonByNameAndByCount(ButtonsEnum.Buy, 8);
+
+    await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
+
+    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
+    await shoppingCartPo.clickOnShoppingCartIcon();
+
+    await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
 
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
