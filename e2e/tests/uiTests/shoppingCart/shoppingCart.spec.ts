@@ -1,9 +1,10 @@
 import {LoginPo} from '../../../pages/login/login.po';
 import {ShoppingCartPo} from '../../../pages/shoppingCart/shoppingCart.po';
 import {expect, test} from '@playwright/test';
-import {IUserDataType} from '../../../dataTypes/uiDataTypes/dataTypes';
+import {IProductDataType, IUserDataType} from '../../../dataTypes/uiDataTypes/dataTypes';
 import {StepUtils} from '../../../helpers/stepUtils';
 import {ButtonsEnum} from '../../../enums/uiEnums/buttons.enum';
+import {StringUtils} from '../../../helpers/stringUtils';
 
 let loginPo: LoginPo;
 let shoppingCartPo: ShoppingCartPo;
@@ -41,14 +42,19 @@ test.describe('Shopping Cart', () => {
   test(`@Test-2 @Regression - The user can open a cart with one item without a discount`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
+    const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData();
+
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the notepad cart without discount`);
     await shoppingCartPo.clickOnButtonByNameInCardWithoutDiscount(ButtonsEnum.Buy);
 
-    await expect(await shoppingCartPo.getShoppingCartCountIconElement()).toHaveText('1');
+    await expect(await shoppingCartPo.getShoppingCartCountIconNumber()).toEqual(1);
 
     await StepUtils.addLog(`The user clicks on the shopping cart icon`);
     await shoppingCartPo.clickOnShoppingCartIcon();
 
     await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
+    await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
+    await expect(await shoppingCartPo.getShoppingCartItemPriceNumber()).toEqual(productData.productPrice);
+    await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
   });
 });

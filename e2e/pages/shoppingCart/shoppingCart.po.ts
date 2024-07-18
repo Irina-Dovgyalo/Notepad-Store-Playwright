@@ -3,6 +3,7 @@ import {Locator, Page} from '@playwright/test';
 import {ElementUtils} from '../../helpers/elementUtils';
 import {ILocator} from '../../dataTypes/uiDataTypes/dataTypes';
 import {Actions} from '../../helpers/actions';
+import {StringUtils} from '../../helpers/stringUtils';
 
 export class ShoppingCartPo extends BasePo {
   private readonly shoppingCartIcon: ILocator;
@@ -53,8 +54,20 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getElementByLocator(this.shoppingCartContainer);
   }
 
-  public async getShoppingCartCountIconElement(): Promise<Locator> {
-    return await ElementUtils.getElementByLocator(this.shoppingCartCountIcon);
+  public async getShoppingCartCountIconNumber(): Promise<number> {
+    return +(await ElementUtils.getTextByLocator(this.shoppingCartCountIcon));
+  }
+
+  public async getShoppingCartItemTitleElement(): Promise<Locator> {
+    return await ElementUtils.getElementByLocator(this.shoppingCartItemTitle);
+  }
+
+  public async getShoppingCartItemPriceNumber(): Promise<number> {
+    return +StringUtils.getMatchStringByRegExp(await ElementUtils.getTextByLocator(this.shoppingCartItemPrice), /\d+/);
+  }
+
+  public async getShoppingCartTotalPriceElement(): Promise<Locator> {
+    return await ElementUtils.getElementByLocator(this.shoppingCartTotalPrice);
   }
 
   public async clickOnShoppingCartIcon(): Promise<void> {
@@ -67,5 +80,6 @@ export class ShoppingCartPo extends BasePo {
 
   public async clickOnButtonByNameInCardWithoutDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInCardWithoutDiscount(name));
+    await this.page.waitForTimeout(1000);
   }
 }
