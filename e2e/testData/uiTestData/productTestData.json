@@ -1,8 +1,16 @@
 [
   {
+    "sampleInfo": "Товар без акции",
     "index": 1,
     "productType": "Записные книжки",
     "productName": "Блокнот в точку",
+    "productPrice": 400
+  },
+  {
+    "sampleInfo": "Акционный Товар",
+    "index": 2,
+    "productType": "Записные книжки",
+    "productName": "Творческий беспорядок",
     "productPrice": 400
   }
 ]

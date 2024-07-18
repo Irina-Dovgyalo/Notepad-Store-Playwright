@@ -10,6 +10,7 @@ export interface IUserDataType {
 }
 
 export interface IProductDataType {
+  sampleInfo: string;
   index: number;
   productType: string;
   productName: string;

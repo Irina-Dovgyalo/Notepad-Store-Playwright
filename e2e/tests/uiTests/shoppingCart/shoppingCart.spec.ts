@@ -44,7 +44,7 @@ test.describe('Shopping Cart', () => {
 
     const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData();
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount`);
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount '${productData.productName}'`);
     await shoppingCartPo.clickOnButtonByNameInProductItemWithoutDiscount(ButtonsEnum.Buy);
 
     await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(1);
@@ -59,5 +59,31 @@ test.describe('Shopping Cart', () => {
 
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+
+    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+  });
+
+  test(`@Test-3 @Regression - The user can open a Shopping cart with one item with discount`, async ({ page }) => {
+    shoppingCartPo = new ShoppingCartPo(page);
+
+    const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData(2);
+
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart with discount '${productData.productName}'`);
+    await shoppingCartPo.clickOnButtonByNameInProductItemWithDiscount(ButtonsEnum.Buy);
+
+    await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(1);
+
+    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
+    await shoppingCartPo.clickOnShoppingCartIcon();
+
+    await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
+    await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
+    await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(productData.productPrice);
+    await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
+
+    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
+    await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+
+    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
 });
