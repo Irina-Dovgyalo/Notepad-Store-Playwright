@@ -96,7 +96,7 @@ export class ShoppingCartPo extends BasePo {
 
     do {
       await Actions.clickByLocator(this.productCartButtonByName(name), itemCount);
-      await this.page.waitForTimeout(500);
+      await this.page.waitForTimeout(100);
       itemCount++;
     } while ((itemCount < count));
   }
