@@ -5,16 +5,26 @@ import {IProductDataType, IUserDataType} from '../../../dataTypes/uiDataTypes/da
 import {StepUtils} from '../../../helpers/stepUtils';
 import {ButtonsEnum} from '../../../enums/uiEnums/buttons.enum';
 import {StringUtils} from '../../../helpers/stringUtils';
+import {ApiLogin} from '../../../api/apiLogin/apiLogin';
+import {ApiShoppingCart} from '../../../api/apiShoppingCart/apiShoppingCart';
 
 let loginPo: LoginPo;
 let shoppingCartPo: ShoppingCartPo;
+let apiLogin: ApiLogin;
+let apiShoppingCart: ApiShoppingCart;
 
 test.describe('Shopping Cart', () => {
   test.beforeEach(`The user can login to the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
+    apiLogin = new ApiLogin();
     shoppingCartPo = new ShoppingCartPo(page);
 
     const userData: IUserDataType = loginPo.dataProvider.getUserTestData();
+    const productData: IProductDataType = loginPo.dataProvider.getProductTestData(3);
+
+    await apiLogin.saveToEnvTokenAndCookie();
+    // console.log('GET basket data --->>> ', await apiShoppingCart.getShoppingCartData());
+    // await apiShoppingCart.addProductToShoppingCart(productData);
 
     await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
     await loginPo.openLoginPage('/login');

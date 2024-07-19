@@ -7,7 +7,7 @@
     "run-tests-in-headless": "npx playwright test",
     "run-tests-in-ui": "npx playwright test --ui",
     "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Test-4\"",
-    "run-tests-by-tag": "npx playwright test --grep \"@Test-3\"",
+    "run-tests-by-tag": "npx playwright test --grep \"@Test-4\"",
     "show-report": "npx playwright show-report"
   },
   "repository": {
@@ -25,5 +25,11 @@
     "@types/node": "^20.14.10",
     "playwright": "^1.16.1",
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "axios": "^0.20.0",
+    "retry-axios": "^2.3.0",
+    "form-data": "^4.0.0"
   }
 }

@@ -15,6 +15,8 @@ export interface IProductDataType {
   productType: string;
   productName: string;
   productPrice: number;
+  product: number;
+  count: number;
 }
 
 export interface ILocator {

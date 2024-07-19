@@ -4,13 +4,26 @@
     "index": 1,
     "productType": "Записные книжки",
     "productName": "Блокнот в точку",
-    "productPrice": 400
+    "productPrice": 400,
+    "product": 1,
+    "count": 1
   },
   {
     "sampleInfo": "Акционный Товар",
     "index": 2,
     "productType": "Записные книжки",
     "productName": "Творческий беспорядок",
-    "productPrice": 400
+    "productPrice": 400,
+    "product": 2,
+    "count": 1
+  },
+  {
+    "sampleInfo": "Акционный Товар на последней странице",
+    "index": 3,
+    "productType": "Еженедельники",
+    "productName": "Европейские каникулы",
+    "productPrice": 826,
+    "product": 15,
+    "count": 1
   }
 ]

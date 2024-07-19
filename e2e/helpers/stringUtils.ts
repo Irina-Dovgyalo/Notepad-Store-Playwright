@@ -16,4 +16,8 @@ export class StringUtils {
   static getStringFromValue(value: any): string {
     return String(value);
   }
+
+  static getStringByJoin(value: string[], separator: string = ''): string {
+    return value.join(separator);
+  }
 }
