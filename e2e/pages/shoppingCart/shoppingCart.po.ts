@@ -132,10 +132,12 @@ export class ShoppingCartPo extends BasePo {
 
   public async clickOnButtonByNameInProductItemWithDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithDiscount(name));
+    await this.page.waitForTimeout(1000);
   }
 
   public async clickOnButtonByNameInProductItemWithoutDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithoutDiscount(name));
+    await this.page.waitForTimeout(1000);
   }
 
   public async clickOnDifferentProductButtonByNameAndNumberOfClicks(name: string, clickCount: number): Promise<void> {
