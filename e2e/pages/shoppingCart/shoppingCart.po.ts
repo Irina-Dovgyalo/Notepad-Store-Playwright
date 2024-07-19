@@ -74,7 +74,7 @@ export class ShoppingCartPo extends BasePo {
   }
 
   public async getShoppingCartCountIconValue(): Promise<number> {
-    await ElementUtils.scrollIntoViewByLocator(this.shoppingCartCountIcon);
+    await Actions.scrollIntoViewByLocator(this.shoppingCartCountIcon);
     return +(await ElementUtils.getTextByLocator(this.shoppingCartCountIcon));
   }
 

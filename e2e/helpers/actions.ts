@@ -12,4 +12,13 @@ export class Actions {
     const pageElement: Locator = await ElementUtils.getElementByLocator(locator, index);
     await pageElement.pressSequentially(text);
   }
+
+  static async scrollIntoViewByLocator(locator: ILocator, index: number = 0): Promise<void> {
+    try {
+      const pageElement: Locator = await ElementUtils.getElementByLocator(locator, index);
+      await pageElement.scrollIntoViewIfNeeded();
+    } catch (e) {
+      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
+    }
+  }
 }
