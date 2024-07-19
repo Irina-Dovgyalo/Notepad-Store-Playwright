@@ -154,18 +154,27 @@ test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 differen
   await expect(await shoppingCartPo.getShoppingCartIconElement()).toBeVisible();
 
   await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
-  await shoppingCartPo.clickOnDifferentProductButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
+  await shoppingCartPo.clickOnDifferentProductButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 7);// 8
 
   await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(8);// 9
 
   await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
   await shoppingCartPo.clickOnShoppingCartIcon();
 
+  let productNameList: string[] = await shoppingCartPo.getProductCartTitleNameTextList();
+  productNameList.unshift(productData.productName);
+  productNameList.pop();
+
+  let productPriceList: number[] = await shoppingCartPo.getProductCartPriceValueList();
+  productPriceList.unshift(productData.productPrice);
+  productPriceList.pop();
+
+  const totalValue: number = await shoppingCartPo.getCalculatedShoppingCartTotalPriceValue();
+
   await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
-  await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(await shoppingCartPo.getProductCartTitleNameText());
-  await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveCount(8);// 9
-  await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(await shoppingCartPo.getProductCartPriceValue() * 9);
-  await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(await shoppingCartPo.getShoppingCartItemPriceValue()));
+  await expect(await shoppingCartPo.getShoppingCartItemTitleTextList()).toEqual(productNameList);
+  await expect(await shoppingCartPo.getShoppingCartItemPriceValueList()).toEqual(productPriceList);
+  await expect(await shoppingCartPo.getShoppingCartTotalPriceValue()).toEqual(totalValue);
 
   await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
   await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);

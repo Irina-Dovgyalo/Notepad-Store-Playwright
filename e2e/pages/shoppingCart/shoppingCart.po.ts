@@ -11,6 +11,7 @@ export class ShoppingCartPo extends BasePo {
   private readonly shoppingCartCountIcon: ILocator;
   private readonly shoppingCartItemTitle: ILocator;
   private readonly shoppingCartItemPrice: ILocator;
+  private readonly shoppingCartItemCount: ILocator;
   private readonly shoppingCartTotalPrice: ILocator;
   private readonly productItem: ILocator;
   private readonly productName: ILocator;
@@ -24,9 +25,10 @@ export class ShoppingCartPo extends BasePo {
     this.shoppingCartItemTitle = {value: page.locator(`#basketContainer .basket-item-title`), definition: 'Shopping Cart Item Title'};
     this.shoppingCartItemPrice = {value: page.locator(`#basketContainer .basket-item-price`), definition: 'Shopping Cart Item Price'};
     this.shoppingCartTotalPrice = {value: page.locator(`#basketContainer .basket_price`), definition: 'Shopping Cart Total Price'};
+    this.shoppingCartItemCount = {value: page.locator(`#basketContainer .basket-item-count`), definition: 'Shopping Cart Total Price'};
     this.productItem = {value: page.locator(`div.site-index div.note-item`), definition: 'Product Item'};
-    this.productName = {value: page.locator(`div.note-item.card div.product_name`), definition: 'Product Name'};
-    this.productPrice = {value: page.locator(`div.note-item.card span.product_price`), definition: 'Product Price'};
+    this.productName = {value: page.locator(`div.note-list.row div.card-body div.product_name`), definition: 'Product Name'};
+    this.productPrice = {value: page.locator(`div.note-list.row div.card-body span.product_price`), definition: 'Product Price'};
   }
 
   private buttonByNameAndIndexInProductItemWithDiscount(name: string, index: number = 1): ILocator {
@@ -61,8 +63,18 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getTextByLocator(this.productName);
   }
 
+  public async getProductCartTitleNameTextList(): Promise<string[]> {
+    return await ElementUtils.getTextListByLocator(this.productName);
+  }
+
   public async getProductCartPriceValue(): Promise<number> {
     return +StringUtils.getStringBySplit(await ElementUtils.getTextByLocator(this.productPrice), ' ');
+  }
+
+  public async getProductCartPriceValueList(): Promise<number[]> {
+    const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.productPrice);
+
+    return priceTextList.map((price: string) => +StringUtils.getStringBySplit(price, ' '));
   }
 
   public async getShoppingCartIconElement(): Promise<Locator> {
@@ -82,10 +94,6 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getElementByLocator(this.shoppingCartItemTitle);
   }
 
-  public async getShoppingCartItemTitleElementList(): Promise<Locator[]> {
-    return await ElementUtils.getElementListByLocator(this.shoppingCartItemTitle);
-  }
-
   public async getShoppingCartItemTitleTextList(): Promise<string[]> {
     return await ElementUtils.getTextListByLocator(this.shoppingCartItemTitle);
   }
@@ -94,8 +102,28 @@ export class ShoppingCartPo extends BasePo {
     return +StringUtils.getMatchStringByRegExp(await ElementUtils.getTextByLocator(this.shoppingCartItemPrice), /\d+/);
   }
 
+  public async getShoppingCartItemPriceValueList(): Promise<number[]> {
+    const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemPrice);
+
+    return priceTextList.map((price: string) => +StringUtils.getMatchStringByRegExp(price, /\d+/));
+  }
+
   public async getShoppingCartTotalPriceElement(): Promise<Locator> {
     return await ElementUtils.getElementByLocator(this.shoppingCartTotalPrice);
+  }
+
+  public async getShoppingCartTotalPriceValue(): Promise<number> {
+    return +(await ElementUtils.getTextByLocator(this.shoppingCartTotalPrice));
+  }
+
+  public async getCalculatedShoppingCartTotalPriceValue(): Promise<number> {
+    const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemPrice);
+    const priceValueList: number[] = priceTextList.map((price: string) => +StringUtils.getMatchStringByRegExp(price, /\d+/));
+    const priceCountList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemCount);
+    const priceCountValueList: number[] = priceCountList.map((price: string) => +price);
+    const totalPriceList: number[] = priceValueList.map((price: number, count: number) => price * priceCountValueList[count]);
+
+    return totalPriceList.reduce((acc: number, number: number) => acc + number);
   }
 
   public async clickOnShoppingCartIcon(): Promise<void> {

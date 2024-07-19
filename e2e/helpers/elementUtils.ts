@@ -30,10 +30,7 @@ export class ElementUtils {
 
   static async getTextListByLocator(locator: ILocator): Promise<string[]> {
     try {
-      const pageElementList: any[] = await locator.value.all();
-      const textList: string[] = pageElementList.map((element) => element.textContent());
-
-      return await Promise.all(textList);
+     return await locator.value.allTextContents();
     } catch (e) {
       throw new Error(`${e}. Unable to get locator '${locator.value}'`);
     }
