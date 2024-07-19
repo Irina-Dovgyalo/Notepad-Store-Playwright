@@ -2,12 +2,12 @@ import {ApiBase} from '../apiCommon/apiBase';
 import * as querystring from 'querystring';
 import {StringUtils} from '../../helpers/stringUtils';
 import * as cheerio from 'cheerio';
-import {ApiBaseTestData} from '../../testData/apiTestData/apiBaseTestData';
+import {ApiBaseHeadersTestData} from '../../testData/apiTestData/apiBaseHeadersTestData';
 import {apiCookie, apiCsrfToken, setApiCookie, setApiCsrfToken} from '../../helpers/env';
 import {IApiHeadersType} from '../../dataTypes/apiDataTypes/apiCommonDataTypes/apiBaseDataTypes';
 
 export class ApiLogin extends ApiBase {
-  public apiBaseTestData: ApiBaseTestData = new ApiBaseTestData();
+  public apiBaseHeadersTestData: ApiBaseHeadersTestData = new ApiBaseHeadersTestData();
 
   public async setLoginCsrfTokenAndCookieWithGetMethod(endpoint: string, header: IApiHeadersType): Promise<void> {
     const responseBody: any = await this.getMethod(endpoint, header, `Unable to get response by the URL '${endpoint}'`);
@@ -55,9 +55,9 @@ export class ApiLogin extends ApiBase {
     });
 
     await this.updateLoginCookieAfterPostMethodWithRedirect(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/login`,
-      this.apiBaseTestData.getHeadersWithFormDataAndCookie(apiCookie), data);
+      this.apiBaseHeadersTestData.getHeadersWithFormDataAndCookie(apiCookie), data);
 
     await this.setUpdatedCsrfTokenWithGetMethod(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/`,
-      this.apiBaseTestData.getHeadersWithCookie(apiCookie));
+      this.apiBaseHeadersTestData.getHeadersWithCookie(apiCookie));
   }
 }

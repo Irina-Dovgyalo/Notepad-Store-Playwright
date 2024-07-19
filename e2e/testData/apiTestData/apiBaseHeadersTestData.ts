@@ -1,7 +1,7 @@
 import {ApiBase} from '../../api/apiCommon/apiBase';
 import {IApiHeadersType} from '../../dataTypes/apiDataTypes/apiCommonDataTypes/apiBaseDataTypes';
 
-export class ApiBaseTestData extends ApiBase {
+export class ApiBaseHeadersTestData extends ApiBase {
   public getHeadersWithFormDataAndCookie(cookie: string): IApiHeadersType {
     return {
       'content-type': 'application/x-www-form-urlencoded',

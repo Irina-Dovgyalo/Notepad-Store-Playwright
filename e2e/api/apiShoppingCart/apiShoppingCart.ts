@@ -1,5 +1,5 @@
 import {ApiBase} from '../apiCommon/apiBase';
-import {ApiBaseTestData} from '../../testData/apiTestData/apiBaseTestData';
+import {ApiBaseHeadersTestData} from '../../testData/apiTestData/apiBaseHeadersTestData';
 import {apiCookie, apiCsrfToken} from '../../helpers/env';
 import {
   IApiClearShoppingCartResponseDataType,
@@ -10,7 +10,7 @@ import {IProductDataType} from '../../dataTypes/uiDataTypes/dataTypes';
 import * as querystring from 'querystring';
 
 export class ApiShoppingCart extends ApiBase {
-  private apiBaseTestData: ApiBaseTestData = new ApiBaseTestData();
+  private apiBaseHeadersTestData: ApiBaseHeadersTestData = new ApiBaseHeadersTestData();
 
   private getBasketGetEndpoint(): string {
     return `${this.dataProvider.getUrlTestData().uiNotesPointSchool}/basket/get`;
@@ -25,18 +25,18 @@ export class ApiShoppingCart extends ApiBase {
   }
 
   public async getShoppingCartData(): Promise<IApiShoppingCartResponseDataType> {
-    return await this.postMethod(this.getBasketGetEndpoint(), this.apiBaseTestData.getHeadersWithCookieAndCsrfToken(apiCookie, apiCsrfToken),
+    return await this.postMethod(this.getBasketGetEndpoint(), this.apiBaseHeadersTestData.getHeadersWithCookieAndCsrfToken(apiCookie, apiCsrfToken),
       `Impossible to get basket data`);
   }
 
   public async clearShoppingCartData(): Promise<IApiClearShoppingCartResponseDataType> {
-    return await this.postMethod(`${this.getBasketClearEndpoint()}`, this.apiBaseTestData.getHeadersWithCookieAndCsrfToken(apiCookie, apiCsrfToken),
+    return await this.postMethod(`${this.getBasketClearEndpoint()}`, this.apiBaseHeadersTestData.getHeadersWithCookieAndCsrfToken(apiCookie, apiCsrfToken),
       {}, `Impossible to clear basket data`);
   }
 
   public async createShoppingCartData(bodyData: string): Promise<IApiClearShoppingCartResponseDataType> {
-    return await this.postMethod(`${this.getBasketCreateEndpoint()}`, this.apiBaseTestData.getHeadersWithFormDataAndCookieAndCsrfToken(apiCookie, apiCsrfToken), bodyData,
-      `Impossible to add new product to the basket`);
+    return await this.postMethod(`${this.getBasketCreateEndpoint()}`, this.apiBaseHeadersTestData.getHeadersWithFormDataAndCookieAndCsrfToken(apiCookie, apiCsrfToken),
+      bodyData, `Impossible to add new product to the basket`);
   }
 
   public async addProductToShoppingCart(productData: IProductDataType): Promise<IApiClearShoppingCartResponseDataType> {
