@@ -45,7 +45,7 @@ test.describe('@Regression - Shopping Cart', async () => {
     await page.close();
   });
 
-  test(`@Bug-1 @Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
+  test(`@Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
