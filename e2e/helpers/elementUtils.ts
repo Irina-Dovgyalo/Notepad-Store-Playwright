@@ -10,14 +10,6 @@ export class ElementUtils {
     }
   }
 
-  static async getElementListByLocator(locator: ILocator): Promise<Locator[]> {
-    try {
-      return await locator.value.all();
-    } catch (e) {
-      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
-    }
-  }
-
   static async getTextByLocator(locator: ILocator, index: number = 0): Promise<string> {
     try {
       const pageElement: any = await locator.value.nth(index);
