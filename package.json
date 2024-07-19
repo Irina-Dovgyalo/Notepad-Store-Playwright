@@ -6,8 +6,8 @@
   "scripts": {
     "run-tests-in-headless": "npx playwright test",
     "run-tests-in-ui": "npx playwright test --ui",
-    "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Test-4\"",
-    "run-tests-by-tag": "npx playwright test --grep \"@Test-4\"",
+    "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Regression\"",
+    "run-tests-by-tag": "npx playwright test --grep \"@Regression\"",
     "show-report": "npx playwright show-report"
   },
   "repository": {

@@ -91,12 +91,22 @@ export class ShoppingCartPo extends BasePo {
     await this.page.waitForTimeout(1000);
   }
 
-  public async clickOnProductCartButtonByNameAndByCount(name: string, count: number): Promise<void> {
+  public async clickOnDifferentProductCartButtonByNameAndNumberOfClicks(name: string, clickCount: number): Promise<void> {
+    let buttonIndex: number = 0;
+
+    do {
+      await Actions.clickByLocator(this.productCartButtonByName(name), buttonIndex);
+      await this.page.waitForTimeout(500);
+      buttonIndex++;
+    } while ((buttonIndex < clickCount));
+  }
+
+  public async clickOnSameProductCartButtonByNameAndNumberOfClicks(name: string, count: number): Promise<void> {
     let itemCount: number = 0;
 
     do {
-      await Actions.clickByLocator(this.productCartButtonByName(name), itemCount);
-      await this.page.waitForTimeout(100);
+      await Actions.clickByLocator(this.productCartButtonByName(name));
+      await this.page.waitForTimeout(500);
       itemCount++;
     } while ((itemCount < count));
   }

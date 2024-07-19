@@ -13,20 +13,23 @@ let shoppingCartPo: ShoppingCartPo;
 let apiLogin: ApiLogin;
 let apiShoppingCart: ApiShoppingCart;
 
-test.describe('Shopping Cart', () => {
+let userData: IUserDataType;
+let productData: IProductDataType;
+
+test.describe('Shopping Cart', async () => {
   test.beforeEach(`The user can login to the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
     shoppingCartPo = new ShoppingCartPo(page);
     apiLogin = new ApiLogin();
     apiShoppingCart = new ApiShoppingCart();
 
-    const userData: IUserDataType = loginPo.dataProvider.getUserTestData();
-    const productData: IProductDataType = loginPo.dataProvider.getProductTestData(3);
+    userData = loginPo.dataProvider.getUserTestData();
 
+    await StepUtils.addLog(`Save to environment token and cookie`);
     await apiLogin.saveToEnvTokenAndCookie();
+
+    await StepUtils.addLog(`Clear Shopping cart`);
     await apiShoppingCart.clearAllShoppingCartData();
-    await apiShoppingCart.addProductToShoppingCart(productData);
-    console.log('ADDED ---> ', productData.productName);
 
     await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
     await loginPo.openLoginPage('/login');
@@ -54,7 +57,7 @@ test.describe('Shopping Cart', () => {
   test(`@Test-2 @Regression - The user can open a Shopping cart with one item without a discount`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
-    const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData();
+    productData = shoppingCartPo.dataProvider.getProductTestData();
 
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount '${productData.productName}'`);
     await shoppingCartPo.clickOnButtonByNameInProductItemWithoutDiscount(ButtonsEnum.Buy);
@@ -78,7 +81,7 @@ test.describe('Shopping Cart', () => {
   test(`@Test-3 @Regression - The user can open a Shopping cart with one item with discount`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
-    const productData: IProductDataType = shoppingCartPo.dataProvider.getProductTestData(2);
+    productData = shoppingCartPo.dataProvider.getProductTestData(2);
 
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart with discount '${productData.productName}'`);
     await shoppingCartPo.clickOnButtonByNameInProductItemWithDiscount(ButtonsEnum.Buy);
@@ -99,11 +102,11 @@ test.describe('Shopping Cart', () => {
     expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
 
-  test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 different products`, async ({ page }) => {
+  test(`@Test-5 @Regression - The user can go to the Shopping cart with 9 products of the same name`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
-    await shoppingCartPo.clickOnProductCartButtonByNameAndByCount(ButtonsEnum.Buy, 8);
+    await shoppingCartPo.clickOnSameProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
 
     await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
 
@@ -117,4 +120,47 @@ test.describe('Shopping Cart', () => {
 
     expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
+});
+
+test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 different products`, async ({ page }) => {
+  loginPo = new LoginPo(page);
+  shoppingCartPo = new ShoppingCartPo(page);
+  apiLogin = new ApiLogin();
+  apiShoppingCart = new ApiShoppingCart();
+
+  userData = loginPo.dataProvider.getUserTestData();
+  productData = shoppingCartPo.dataProvider.getProductTestData(3);
+
+  await StepUtils.addLog(`Save to environment token and cookie`);
+  await apiLogin.saveToEnvTokenAndCookie();
+
+  await StepUtils.addLog(`Clear Shopping cart`);
+  await apiShoppingCart.clearAllShoppingCartData();
+
+  await StepUtils.addLog(`Add a new product '${productData.productName}' to the Shopping cart`);
+  await apiShoppingCart.addProductToShoppingCart(productData);
+
+  await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
+  await loginPo.openLoginPage('/login');
+
+  await StepUtils.addLog(`The user types the name '${userData.username}' and password '${userData.password}'`);
+  await loginPo.loginToNotepadStore(userData.username, userData.password);
+
+  await expect(await shoppingCartPo.getProductItemElement()).toBeVisible();
+  await expect(await shoppingCartPo.getShoppingCartIconElement()).toBeVisible();
+
+  await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
+  await shoppingCartPo.clickOnDifferentProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
+
+  await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
+
+  await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
+  await shoppingCartPo.clickOnShoppingCartIcon();
+
+  await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
+
+  await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
+  await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+
+  expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
 });
