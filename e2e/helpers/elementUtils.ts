@@ -38,4 +38,12 @@ export class ElementUtils {
       throw new Error(`${e}. Unable to get locator '${locator.value}'`);
     }
   }
+
+  static async scrollIntoViewByLocator(locator: ILocator, index: number = 0): Promise<void> {
+    try {
+      await locator.value.nth(index).scrollIntoViewIfNeeded();
+    } catch (e) {
+      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
+    }
+  }
 }
