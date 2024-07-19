@@ -105,7 +105,7 @@ test.describe('@Regression - Shopping Cart', async () => {
   test(`@Test-5 @Regression - The user can go to the Shopping cart with 9 products of the same name`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
-    await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
+    await StepUtils.addLog(`The user adds 9 items to the Shopping cart`);
     await shoppingCartPo.clickOnSameProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 9);
 
     await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
@@ -114,6 +114,10 @@ test.describe('@Regression - Shopping Cart', async () => {
     await shoppingCartPo.clickOnShoppingCartIcon();
 
     await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
+    await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(await shoppingCartPo.getProductCartTitleNameText());
+    await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveCount(1);
+    await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(await shoppingCartPo.getProductCartPriceValue() * 9);
+    await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(await shoppingCartPo.getShoppingCartItemPriceValue()));
 
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);

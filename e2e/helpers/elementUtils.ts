@@ -10,11 +10,30 @@ export class ElementUtils {
     }
   }
 
+  static async getElementListByLocator(locator: ILocator): Promise<Locator[]> {
+    try {
+      return await locator.value.all();
+    } catch (e) {
+      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
+    }
+  }
+
   static async getTextByLocator(locator: ILocator, index: number = 0): Promise<string> {
     try {
       const pageElement: any = await locator.value.nth(index);
 
       return await pageElement.textContent();
+    } catch (e) {
+      throw new Error(`${e}. Unable to get locator '${locator.value}'`);
+    }
+  }
+
+  static async getTextListByLocator(locator: ILocator): Promise<string[]> {
+    try {
+      const pageElementList: any[] = await locator.value.all();
+      const textList: string[] = pageElementList.map((element) => element.textContent());
+
+      return await Promise.all(textList);
     } catch (e) {
       throw new Error(`${e}. Unable to get locator '${locator.value}'`);
     }

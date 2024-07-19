@@ -13,6 +13,8 @@ export class ShoppingCartPo extends BasePo {
   private readonly shoppingCartItemPrice: ILocator;
   private readonly shoppingCartTotalPrice: ILocator;
   private readonly productItem: ILocator;
+  private readonly productName: ILocator;
+  private readonly productPrice: ILocator;
 
   constructor(page: Page) {
     super(page);
@@ -23,6 +25,8 @@ export class ShoppingCartPo extends BasePo {
     this.shoppingCartItemPrice = {value: page.locator(`#basketContainer .basket-item-price`), definition: 'Shopping Cart Item Price'};
     this.shoppingCartTotalPrice = {value: page.locator(`#basketContainer .basket_price`), definition: 'Shopping Cart Total Price'};
     this.productItem = {value: page.locator(`div.site-index div.note-item`), definition: 'Product Item'};
+    this.productName = {value: page.locator(`div.note-item.card div.product_name`), definition: 'Product Name'};
+    this.productPrice = {value: page.locator(`div.note-item.card span.product_price`), definition: 'Product Price'};
   }
 
   private buttonByNameAndIndexInProductItemWithDiscount(name: string, index: number = 1): ILocator {
@@ -53,6 +57,14 @@ export class ShoppingCartPo extends BasePo {
     return await ElementUtils.getElementByLocator(this.productItem, 0);
   }
 
+  public async getProductCartTitleNameText(): Promise<string> {
+    return await ElementUtils.getTextByLocator(this.productName);
+  }
+
+  public async getProductCartPriceValue(): Promise<number> {
+    return +StringUtils.getStringBySplit(await ElementUtils.getTextByLocator(this.productPrice), ' ');
+  }
+
   public async getShoppingCartIconElement(): Promise<Locator> {
     return await ElementUtils.getElementByLocator(this.shoppingCartIcon);
   }
@@ -67,6 +79,14 @@ export class ShoppingCartPo extends BasePo {
 
   public async getShoppingCartItemTitleElement(): Promise<Locator> {
     return await ElementUtils.getElementByLocator(this.shoppingCartItemTitle);
+  }
+
+  public async getShoppingCartItemTitleElementList(): Promise<Locator[]> {
+    return await ElementUtils.getElementListByLocator(this.shoppingCartItemTitle);
+  }
+
+  public async getShoppingCartItemTitleTextList(): Promise<string[]> {
+    return await ElementUtils.getTextListByLocator(this.shoppingCartItemTitle);
   }
 
   public async getShoppingCartItemPriceValue(): Promise<number> {
