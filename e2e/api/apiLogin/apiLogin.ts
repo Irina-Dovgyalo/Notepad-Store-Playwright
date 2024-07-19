@@ -3,56 +3,61 @@ import * as querystring from 'querystring';
 import {StringUtils} from '../../helpers/stringUtils';
 import * as cheerio from 'cheerio';
 import {ApiBaseTestData} from '../../testData/apiTestData/apiBaseTestData';
-import {setApiCookie, setApiToken} from '../../helpers/env';
+import {apiCookie, apiCsrfToken, setApiCookie, setApiCsrfToken} from '../../helpers/env';
+import {IApiHeadersType} from '../../dataTypes/apiDataTypes/apiCommonDataTypes/apiBaseDataTypes';
 
 export class ApiLogin extends ApiBase {
   public apiBaseTestData: ApiBaseTestData = new ApiBaseTestData();
 
-  public async saveToEnvTokenAndCookie(userIndex: number = 1): Promise<any> {
-    const responseBody: any = await this.getMethodWithWholeResponse(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/login`, {}, `Unable to get Notes Point School login page`);
+  public async setLoginCsrfTokenAndCookieWithGetMethod(endpoint: string, header: IApiHeadersType): Promise<void> {
+    const responseBody: any = await this.getMethod(endpoint, header, `Unable to get response by the URL '${endpoint}'`);
     const $: any = cheerio.load(`${responseBody.bodyInfo}`);
     const csrfToken: string = $('#login-form > input').attr('value');
-    console.log('1 csrfToken -> ', csrfToken);
-    const loginHeadersSetCookie: string[] = responseBody.headers['set-cookie'];
-    console.log('2 loginHeadersSetCookie -> ', loginHeadersSetCookie);
-    // Remove date and get CSRF-TOKEN and session values to set in cookie
-    let loginCookie: string = '';
+    const loginHeadersResponseSetCookie: string[] = responseBody.headers['set-cookie'];
+    let cookie: string = '';
 
-    if (loginHeadersSetCookie.length > 0) {
-      loginCookie = StringUtils.getStringByJoin(loginHeadersSetCookie.map((cookies: string) => StringUtils.getStringBySplit(cookies, ';') + '; '));
+    if (loginHeadersResponseSetCookie.length > 0) {
+      cookie = StringUtils.getStringByJoin(loginHeadersResponseSetCookie.map((cookies: string) => StringUtils.getStringBySplit(cookies, ';') + '; '));
     }
 
-    console.log('3 loginCookie -> ', loginCookie);
+    setApiCsrfToken(csrfToken);
+    setApiCookie(cookie);
+  }
 
-    const data: any = querystring.stringify({
-      _csrf: csrfToken,
+  public async setUpdatedCsrfTokenWithGetMethod(endpoint: string, header: IApiHeadersType): Promise<void> {
+    const responseBody: any = await this.getMethod(endpoint, header, `Unable to get response by the URL '${endpoint}'`);
+    const $: any = cheerio.load(`${responseBody.bodyInfo}`);
+    const csrfToken: string = $('form[action="/site/logout"] > input').attr('value');
+
+    setApiCsrfToken(csrfToken);
+  }
+
+  public async updateLoginCookieAfterPostMethodWithRedirect(endpoint: string, header: IApiHeadersType, bodyData?: string | object): Promise<void> {
+    const responseBody: any = await this.postMethodWithRedirect(endpoint, header, bodyData, `Unable to get response by the URL '${endpoint}'`);
+    const loginHeadersResponseSetCookie: string[] = responseBody.headers['set-cookie'];
+    let requestLoginCookie: string = '';
+
+    if (loginHeadersResponseSetCookie.length > 0) {
+      requestLoginCookie = StringUtils.getStringByJoin(loginHeadersResponseSetCookie.map((cookies: string) => StringUtils.getStringBySplit(cookies, ';') + '; '));
+    }
+
+    setApiCookie(requestLoginCookie);
+  }
+
+  public async saveToEnvTokenAndCookie(userIndex: number = 1): Promise<any> {
+    await this.setLoginCsrfTokenAndCookieWithGetMethod(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/login`, {});
+
+    const data: string = querystring.stringify({
+      _csrf: apiCsrfToken,
       'LoginForm[username]': this.dataProvider.getUserTestData(userIndex).username,
       'LoginForm[password]': this.dataProvider.getUserTestData(userIndex).password,
       'LoginForm[rememberMe]': 0
     });
 
-    console.log('4 POST data: ', data);
+    await this.updateLoginCookieAfterPostMethodWithRedirect(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/login`,
+      this.apiBaseTestData.getHeadersWithFormDataAndCookie(apiCookie), data);
 
-    // const response: any = await this.postMethodWithRedirect(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/login`,
-    //   this.apiBaseTestData.getHeadersWithFormDataAndCookie(loginCookie), data,
-    //   `Unable to set user credentials '${this.dataProvider.getUserTestData(userIndex).username}' via API when logging into Notes Point School`);
-    //
-    // const setCookie: string[] = response.headers['set-cookie'];
-    // console.log(`6 setCookie ---> `, setCookie);
-    // let cookie: string = '';
-    // let loginToken: string = '';
-    //
-    // if (setCookie.length > 0) {
-    //   for (const headerCookie of setCookie) {
-    //     cookie += StringUtils.getStringBySplit(headerCookie, ';') + '; ';
-    //   }
-    //
-    //   loginToken += decodeURIComponent(StringUtils.getStringBySplit(StringUtils.getStringBySplit(setCookie[0], ';'), '=', 1));
-    // }
-    //
-    // console.log('111 cookie -> ', cookie);
-    // console.log('222 loginToken -> ', loginToken);
-    // setApiToken(loginToken);
-    // setApiCookie(cookie);
+    await this.setUpdatedCsrfTokenWithGetMethod(`${this.dataProvider.getUrlTestData().uiNotesPointSchool}/`,
+      this.apiBaseTestData.getHeadersWithCookie(apiCookie));
   }
 }

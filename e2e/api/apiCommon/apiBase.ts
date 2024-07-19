@@ -6,7 +6,7 @@ import axios from 'axios';
 export class ApiBase {
   public dataProvider: DataProvider = new DataProvider();
 
-  public async getMethodWithWholeResponse(endpoint: string, headersData: IApiHeadersType, errorMessage?: string): Promise<any> {
+  public async getMethod(endpoint: string, headersData: IApiHeadersType, errorMessage?: string): Promise<any> {
     let cfg: any = {};
     let bodyInfo: any = {};
     let status: any = {};
@@ -64,6 +64,8 @@ export class ApiBase {
   public async postMethod(endpoint: string, headersData: IApiHeadersType, bodyData: string | object, errorMessage?: string): Promise<any> {
     let cfg: any = {};
     let bodyInfo: any = {};
+    let status: any = {};
+    let headers: any = {};
 
     rax.attach();
     await axios({
@@ -115,7 +117,7 @@ export class ApiBase {
         );
       }
     });
-    return bodyInfo;
+    return {bodyInfo: bodyInfo, status: status, headers: headers};
   }
 
   public async postMethodWithRedirect(endpoint: string, headersData: IApiHeadersType, bodyData: string | object, errorMessage?: string): Promise<any> {

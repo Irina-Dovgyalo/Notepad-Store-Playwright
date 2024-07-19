@@ -1,5 +1,5 @@
 export interface IApiHeadersType {
-  'accept'?: string;
+  'Accept'?: string;
   'Authorization'?: string;
   'content-type'?: string;
   'cookie'?: string;

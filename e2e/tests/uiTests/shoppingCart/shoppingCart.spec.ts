@@ -16,15 +16,17 @@ let apiShoppingCart: ApiShoppingCart;
 test.describe('Shopping Cart', () => {
   test.beforeEach(`The user can login to the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
-    apiLogin = new ApiLogin();
     shoppingCartPo = new ShoppingCartPo(page);
+    apiLogin = new ApiLogin();
+    apiShoppingCart = new ApiShoppingCart();
 
     const userData: IUserDataType = loginPo.dataProvider.getUserTestData();
     const productData: IProductDataType = loginPo.dataProvider.getProductTestData(3);
 
     await apiLogin.saveToEnvTokenAndCookie();
-    // console.log('GET basket data --->>> ', await apiShoppingCart.getShoppingCartData());
-    // await apiShoppingCart.addProductToShoppingCart(productData);
+    await apiShoppingCart.clearAllShoppingCartData();
+    await apiShoppingCart.addProductToShoppingCart(productData);
+    console.log('ADDED ---> ', productData.productName);
 
     await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
     await loginPo.openLoginPage('/login');

@@ -1,6 +1,5 @@
 import {ApiBase} from '../../api/apiCommon/apiBase';
 import {IApiHeadersType} from '../../dataTypes/apiDataTypes/apiCommonDataTypes/apiBaseDataTypes';
-import {apiCookie, apiToken} from '../../helpers/env';
 
 export class ApiBaseTestData extends ApiBase {
   public getHeadersWithFormDataAndCookie(cookie: string): IApiHeadersType {
@@ -10,20 +9,25 @@ export class ApiBaseTestData extends ApiBase {
     };
   }
 
-  public getHeadersWithCookieAndToken(cookie, token): IApiHeadersType {
+  public getHeadersWithFormDataAndCookieAndCsrfToken(cookie: string, csrfToken: string): IApiHeadersType {
     return {
-      'content-type': 'application/jso',
+      'content-type': 'application/x-www-form-urlencoded',
       'cookie': cookie,
-      'X-Csrf-Token': token
+      'X-Csrf-Token': csrfToken
     };
   }
 
-
-  public getHeadersWithBearerTokenAndFormData(data: any): IApiHeadersType {
+  public getHeadersWithCookie(cookie: string): IApiHeadersType {
     return {
-      Authorization: `Bearer ${apiToken}`,
-      accept: 'application/json',
-      ...data.getHeaders()
+      'cookie': cookie
+    };
+  }
+
+  public getHeadersWithCookieAndCsrfToken(cookie: string, csrfToken: string): IApiHeadersType {
+    return {
+      'Accept': 'application/json',
+      'cookie': cookie,
+      'X-Csrf-Token': csrfToken
     };
   }
 }

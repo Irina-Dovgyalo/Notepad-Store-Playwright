@@ -1,8 +1,8 @@
-export let apiToken: string;
+export let apiCsrfToken: string;
 export let apiCookie: string;
 
-export function setApiToken(newValue: string): void {
-  apiToken = newValue;
+export function setApiCsrfToken(newValue: string): void {
+  apiCsrfToken = newValue;
 }
 
 export function setApiCookie(newValue: string): void {
