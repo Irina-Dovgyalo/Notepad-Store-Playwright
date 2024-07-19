@@ -102,11 +102,11 @@ test.describe('@Regression - Shopping Cart', async () => {
     expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
 
-  test(`@Test-5 @Regression - The user can go to the Shopping cart with 9 products of the same name`, async ({ page }) => {
+  test(`@Test-5 @Regression - The user can go to the Shopping cart with 9 discounted products of the same name`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user adds 9 items to the Shopping cart`);
-    await shoppingCartPo.clickOnSameProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 9);
+    await shoppingCartPo.clickOnSameProductButtonWithDiscountByButtonNameAndNumberOfClicks(ButtonsEnum.Buy, 9);
 
     await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
 
@@ -154,14 +154,18 @@ test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 differen
   await expect(await shoppingCartPo.getShoppingCartIconElement()).toBeVisible();
 
   await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
-  await shoppingCartPo.clickOnDifferentProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
+  await shoppingCartPo.clickOnDifferentProductButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
 
-  await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
+  await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(8);// 9
 
   await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
   await shoppingCartPo.clickOnShoppingCartIcon();
 
   await expect(await shoppingCartPo.getShoppingCartContainerElement()).toBeVisible();
+  await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveText(await shoppingCartPo.getProductCartTitleNameText());
+  await expect(await shoppingCartPo.getShoppingCartItemTitleElement()).toHaveCount(8);// 9
+  await expect(await shoppingCartPo.getShoppingCartItemPriceValue()).toEqual(await shoppingCartPo.getProductCartPriceValue() * 9);
+  await expect(await shoppingCartPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(await shoppingCartPo.getShoppingCartItemPriceValue()));
 
   await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
   await shoppingCartPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);

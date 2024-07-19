@@ -103,15 +103,15 @@ export class ShoppingCartPo extends BasePo {
 
   public async clickOnButtonByNameInProductItemWithDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithDiscount(name));
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForTimeout(1000);
   }
 
   public async clickOnButtonByNameInProductItemWithoutDiscount(name: string): Promise<void> {
     await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithoutDiscount(name));
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForTimeout(1000);
   }
 
-  public async clickOnDifferentProductCartButtonByNameAndNumberOfClicks(name: string, clickCount: number): Promise<void> {
+  public async clickOnDifferentProductButtonByNameAndNumberOfClicks(name: string, clickCount: number): Promise<void> {
     let buttonIndex: number = 0;
 
     do {
@@ -121,11 +121,11 @@ export class ShoppingCartPo extends BasePo {
     } while ((buttonIndex < clickCount));
   }
 
-  public async clickOnSameProductCartButtonByNameAndNumberOfClicks(name: string, count: number): Promise<void> {
+  public async clickOnSameProductButtonWithDiscountByButtonNameAndNumberOfClicks(name: string, count: number): Promise<void> {
     let itemCount: number = 0;
 
     do {
-      await Actions.clickByLocator(this.productCartButtonByName(name));
+      await Actions.clickByLocator(this.buttonByNameAndIndexInProductItemWithDiscount(name));
       await this.page.waitForTimeout(500);
       itemCount++;
     } while ((itemCount < count));
