@@ -16,7 +16,7 @@ let apiShoppingCart: ApiShoppingCart;
 let userData: IUserDataType;
 let productData: IProductDataType;
 
-test.describe('Shopping Cart', async () => {
+test.describe('@Regression - Shopping Cart', async () => {
   test.beforeEach(`The user can login to the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
     shoppingCartPo = new ShoppingCartPo(page);
@@ -45,7 +45,7 @@ test.describe('Shopping Cart', async () => {
     await page.close();
   });
 
-  test(`@Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
+  test(`@Bug-1 @Test-1 @Regression - The user can open an empty Shopping cart`, async ({ page }) => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
@@ -106,7 +106,7 @@ test.describe('Shopping Cart', async () => {
     shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
-    await shoppingCartPo.clickOnSameProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
+    await shoppingCartPo.clickOnSameProductCartButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 9);
 
     await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
 

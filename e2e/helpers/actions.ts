@@ -12,4 +12,11 @@ export class Actions {
     const pageElement: Locator = await ElementUtils.getElementByLocator(locator, index);
     await pageElement.pressSequentially(text);
   }
+
+  static async typeTextInLocator(locator: ILocator, text: string, index: number = 0): Promise<void> {
+    const pageElement: Locator = await ElementUtils.getElementByLocator(locator, index);
+    await pageElement.clear();
+    await pageElement.fill(text);
+    await pageElement.click();
+  }
 }
