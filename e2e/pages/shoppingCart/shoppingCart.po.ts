@@ -119,8 +119,8 @@ export class ShoppingCartPo extends BasePo {
   public async getCalculatedShoppingCartTotalPriceValue(): Promise<number> {
     const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemPrice);
     const priceValueList: number[] = priceTextList.map((price: string) => +StringUtils.getMatchStringByRegExp(price, /\d+/));
-    const priceCountList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemCount);
-    const priceCountValueList: number[] = priceCountList.map((price: string) => +price);
+    const priceCountTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemCount);
+    const priceCountValueList: number[] = priceCountTextList.map((price: string) => +price);
     const totalPriceList: number[] = priceValueList.map((price: number, count: number) => price * priceCountValueList[count]);
 
     return totalPriceList.reduce((acc: number, number: number) => acc + number);

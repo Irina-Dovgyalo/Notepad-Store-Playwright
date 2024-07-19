@@ -154,20 +154,20 @@ test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 differen
   await expect(await shoppingCartPo.getShoppingCartIconElement()).toBeVisible();
 
   await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
-  await shoppingCartPo.clickOnDifferentProductButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 7);// 8
+  await shoppingCartPo.clickOnDifferentProductButtonByNameAndNumberOfClicks(ButtonsEnum.Buy, 8);
 
-  await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(8);// 9
+  await expect(await shoppingCartPo.getShoppingCartCountIconValue()).toEqual(9);
 
   await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
   await shoppingCartPo.clickOnShoppingCartIcon();
 
   let productNameList: string[] = await shoppingCartPo.getProductCartTitleNameTextList();
   productNameList.unshift(productData.productName);
-  productNameList.pop();
+  // productNameList.pop();
 
   let productPriceList: number[] = await shoppingCartPo.getProductCartPriceValueList();
   productPriceList.unshift(productData.productPrice);
-  productPriceList.pop();
+  // productPriceList.pop();
 
   const totalValue: number = await shoppingCartPo.getCalculatedShoppingCartTotalPriceValue();
 
