@@ -5,7 +5,7 @@ import {ILocator} from '../../../dataTypes/uiDataTypes/dataTypes';
 import {Actions} from '../../../helpers/actions';
 import {StringUtils} from '../../../helpers/stringUtils';
 
-export class ShoppingCartDialogPo extends BasePo {
+export class ShoppingCartPopupPo extends BasePo {
   private readonly shoppingCartContainer: ILocator;
   private readonly shoppingCartItemTitle: ILocator;
   private readonly shoppingCartItemPrice: ILocator;
