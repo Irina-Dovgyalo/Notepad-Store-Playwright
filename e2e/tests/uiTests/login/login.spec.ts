@@ -4,7 +4,7 @@ import {StepUtils} from '../../../helpers/stepUtils';
 
 let loginPo: LoginPo;
 
-test.describe('Login Page', () => {
+test.describe('@Login - Login Page', () => {
   test.beforeEach(`The user can open the Notepad Store login page`, async ({ page }) => {
     loginPo = new LoginPo(page);
 
@@ -19,7 +19,7 @@ test.describe('Login Page', () => {
   test(`The user can see the correct title on the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
 
-    expect(await page.title()).toBe(/Авторизация/);
+    expect(await page.title()).toBe("Авторизация");
   });
 
   test(`The user can see the correct heading text on the Notepad Store app`, async ({ page }) => {
