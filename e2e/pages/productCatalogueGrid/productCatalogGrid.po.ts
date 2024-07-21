@@ -45,7 +45,7 @@ export class ProductCatalogGridPo extends BasePo {
     return await ElementUtils.getTextByLocator(this.productName);
   }
 
-  public async getProductCartTitleNameTextList(): Promise<string[]> {
+  public async getProductCartTitleNameTextList(countOfProducts: number): Promise<string[]> {
     return await ElementUtils.getTextListByLocator(this.productName);
   }
 
@@ -53,7 +53,7 @@ export class ProductCatalogGridPo extends BasePo {
     return +StringUtils.getStringBySplit(await ElementUtils.getTextByLocator(this.productPrice), ' ');
   }
 
-  public async getProductCartPriceValueList(): Promise<number[]> {
+  public async getProductCartPriceValueList(countOfProducts: number): Promise<number[]> {
     const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.productPrice);
 
     return priceTextList.map((price: string) => +StringUtils.getStringBySplit(price, ' '));

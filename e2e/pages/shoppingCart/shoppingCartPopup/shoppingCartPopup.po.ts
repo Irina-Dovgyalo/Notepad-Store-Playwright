@@ -6,7 +6,7 @@ import {Actions} from '../../../helpers/actions';
 import {StringUtils} from '../../../helpers/stringUtils';
 
 export class ShoppingCartPopupPo extends BasePo {
-  private readonly shoppingCartContainer: ILocator;
+  private readonly shoppingCartPopup: ILocator;
   private readonly shoppingCartItemTitle: ILocator;
   private readonly shoppingCartItemPrice: ILocator;
   private readonly shoppingCartItemCount: ILocator;
@@ -14,7 +14,7 @@ export class ShoppingCartPopupPo extends BasePo {
 
   constructor(page: Page) {
     super(page);
-    this.shoppingCartContainer = {value: page.locator(`#basketContainer > div.dropdown-menu.dropdown-menu-right.show`), definition: 'Shopping Cart Container'};
+    this.shoppingCartPopup = {value: page.locator(`#basketContainer > div.dropdown-menu.dropdown-menu-right.show`), definition: 'Shopping Cart Popup'};
     this.shoppingCartItemTitle = {value: page.locator(`#basketContainer .basket-item-title`), definition: 'Shopping Cart Item Title'};
     this.shoppingCartItemPrice = {value: page.locator(`#basketContainer .basket-item-price`), definition: 'Shopping Cart Item Price'};
     this.shoppingCartTotalPrice = {value: page.locator(`#basketContainer .basket_price`), definition: 'Shopping Cart Total Price'};
@@ -25,8 +25,8 @@ export class ShoppingCartPopupPo extends BasePo {
     return {value: this.page.locator(`//a[contains(text(), '${name}')]`), definition: `Shopping Cart Button By Name '${name}'`};
   }
 
-  public async getShoppingCartContainerElement(): Promise<Locator> {
-    return await ElementUtils.getElementByLocator(this.shoppingCartContainer);
+  public async getShoppingCartPopupElement(): Promise<Locator> {
+    return await ElementUtils.getElementByLocator(this.shoppingCartPopup);
   }
 
   public async getShoppingCartItemTitleElement(): Promise<Locator> {
@@ -58,11 +58,11 @@ export class ShoppingCartPopupPo extends BasePo {
   public async getCalculatedShoppingCartTotalPriceValue(): Promise<number> {
     const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemPrice);
     const priceValueList: number[] = priceTextList.map((price: string) => +StringUtils.getMatchStringByRegExp(price, /\d+/));
-    const priceCountTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemCount);
-    const priceCountValueList: number[] = priceCountTextList.map((price: string) => +price);
-    const totalPriceList: number[] = priceValueList.map((price: number, count: number) => price * priceCountValueList[count]);
+    // const priceCountTextList: string[] = await ElementUtils.getTextListByLocator(this.shoppingCartItemCount);
+    // const priceCountValueList: number[] = priceCountTextList.map((price: string) => +price);
+    // const totalPriceList: number[] = priceValueList.map((price: number, count: number) => price * priceCountValueList[count]);
 
-    return totalPriceList.reduce((acc: number, number: number) => acc + number);
+    return priceValueList.reduce((acc: number, number: number) => acc + number);
   }
 
   public async clickOnShoppingCartButtonByName(name: string): Promise<void> {
