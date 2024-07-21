@@ -1,6 +1,6 @@
 import {LoginPo} from '../../../pages/login/login.po';
 import {ShoppingCartPopupPo} from '../../../pages/shoppingCart/shoppingCartPopup/shoppingCartPopup.po';
-import {expect, test} from '@playwright/test';
+import {expect, mergeExpects, test} from '@playwright/test';
 import {IProductDataType, IUserDataType} from '../../../dataTypes/uiDataTypes/dataTypes';
 import {StepUtils} from '../../../helpers/stepUtils';
 import {ButtonsEnum} from '../../../enums/uiEnums/buttons.enum';
@@ -9,12 +9,14 @@ import {ApiLogin} from '../../../api/apiLogin/apiLogin';
 import {ApiShoppingCart} from '../../../api/apiShoppingCart/apiShoppingCart';
 import {NavigationPo} from '../../../pages/navigation/navigation.po';
 import {ProductCatalogGridPo} from '../../../pages/productCatalogueGrid/productCatalogGrid.po';
+import {ShoppingCartPo} from '../../../pages/shoppingCart/shoppingCart.po';
 
 let apiLogin: ApiLogin;
 let apiShoppingCart: ApiShoppingCart;
 let loginPo: LoginPo;
 let navigationPo: NavigationPo;
 let shoppingCartPopupPo: ShoppingCartPopupPo;
+let shoppingCartPo: ShoppingCartPo;
 let productCatalogGridPo: ProductCatalogGridPo;
 
 let userData: IUserDataType;
@@ -27,7 +29,6 @@ test.describe('@Regression - Shopping Cart', async () => {
     loginPo = new LoginPo(page);
     navigationPo = new NavigationPo(page);
     productCatalogGridPo = new ProductCatalogGridPo(page);
-    shoppingCartPopupPo = new ShoppingCartPopupPo(page);
 
     userData = loginPo.dataProvider.getUserTestData();
 
@@ -65,6 +66,7 @@ test.describe('@Regression - Shopping Cart', async () => {
     navigationPo = new NavigationPo(page);
     productCatalogGridPo = new ProductCatalogGridPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
+    shoppingCartPo = new ShoppingCartPo(page);
 
     productData = shoppingCartPopupPo.dataProvider.getProductTestData();
 
@@ -84,13 +86,15 @@ test.describe('@Regression - Shopping Cart', async () => {
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
-    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
   });
 
   test(`@Test-3 @Regression - The user can open a Shopping cart with one item with discount`, async ({ page }) => {
     navigationPo = new NavigationPo(page);
     productCatalogGridPo = new ProductCatalogGridPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
+    shoppingCartPo = new ShoppingCartPo(page);
 
     productData = shoppingCartPopupPo.dataProvider.getProductTestData(2);
 
@@ -110,13 +114,15 @@ test.describe('@Regression - Shopping Cart', async () => {
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
-    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
   });
 
   test(`@Test-5 @Regression - The user can go to the Shopping cart with 9 discounted products of the same name`, async ({ page }) => {
     navigationPo = new NavigationPo(page);
     productCatalogGridPo = new ProductCatalogGridPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
+    shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user adds 9 items to the Shopping cart`);
     await productCatalogGridPo.clickOnBuyButtonInSameProductWithDiscountByNumberOfClicks(9);
@@ -135,7 +141,8 @@ test.describe('@Regression - Shopping Cart', async () => {
     await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
     await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
-    expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+    await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
   });
 });
 
@@ -146,6 +153,7 @@ test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 differen
   navigationPo = new NavigationPo(page);
   productCatalogGridPo = new ProductCatalogGridPo(page);
   shoppingCartPopupPo = new ShoppingCartPopupPo(page);
+  shoppingCartPo = new ShoppingCartPo(page);
 
   userData = loginPo.dataProvider.getUserTestData();
   productData = shoppingCartPopupPo.dataProvider.getProductTestData(3);
@@ -193,5 +201,6 @@ test(`@Test-4 @Regression - The user can go to the Shopping cart with 9 differen
   await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
   await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
-  expect(page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+  await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
+  await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
 });
