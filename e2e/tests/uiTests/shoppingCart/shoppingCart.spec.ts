@@ -1,6 +1,6 @@
 import {LoginPo} from '../../../pages/login/login.po';
 import {ShoppingCartPopupPo} from '../../../pages/shoppingCart/shoppingCartPopup/shoppingCartPopup.po';
-import {expect, mergeExpects, test} from '@playwright/test';
+import {expect, test} from '@playwright/test';
 import {IProductDataType, IUserDataType} from '../../../dataTypes/uiDataTypes/dataTypes';
 import {StepUtils} from '../../../helpers/stepUtils';
 import {ButtonsEnum} from '../../../enums/uiEnums/buttons.enum';
