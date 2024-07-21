@@ -16,13 +16,13 @@ test.describe('Login Page', () => {
     await page.close();
   });
 
-  test(`The Notepad Store login page title is displayed correctly`, async ({ page }) => {
+  test(`The user can see the correct title on the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
 
     expect(await page.title()).toBe(/Авторизация/);
   });
 
-  test(`The Notepad Store login page heading text is displayed correctly`, async ({ page }) => {
+  test(`The user can see the correct heading text on the Notepad Store app`, async ({ page }) => {
     loginPo = new LoginPo(page);
 
     await expect(await loginPo.getLoginHeadingElement()).toBeVisible();

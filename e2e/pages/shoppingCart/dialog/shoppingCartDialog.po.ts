@@ -1,11 +1,11 @@
-import {BasePo} from '../common/base.po';
+import {BasePo} from '../../common/base.po';
 import {Locator, Page} from '@playwright/test';
-import {ElementUtils} from '../../helpers/elementUtils';
-import {ILocator} from '../../dataTypes/uiDataTypes/dataTypes';
-import {Actions} from '../../helpers/actions';
-import {StringUtils} from '../../helpers/stringUtils';
+import {ElementUtils} from '../../../helpers/elementUtils';
+import {ILocator} from '../../../dataTypes/uiDataTypes/dataTypes';
+import {Actions} from '../../../helpers/actions';
+import {StringUtils} from '../../../helpers/stringUtils';
 
-export class ShoppingCartPo extends BasePo {
+export class ShoppingCartDialogPo extends BasePo {
   private readonly shoppingCartContainer: ILocator;
   private readonly shoppingCartItemTitle: ILocator;
   private readonly shoppingCartItemPrice: ILocator;
