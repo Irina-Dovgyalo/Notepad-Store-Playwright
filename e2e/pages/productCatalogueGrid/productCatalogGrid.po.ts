@@ -5,6 +5,7 @@ import {ButtonsEnum} from '../../enums/uiEnums/buttons.enum';
 import {ElementUtils} from '../../helpers/elementUtils';
 import {StringUtils} from '../../helpers/stringUtils';
 import {Actions} from '../../helpers/actions';
+import {ArrayUtils} from '../../helpers/arrayUtils';
 
 export class ProductCatalogGridPo extends BasePo {
   private readonly productItem: ILocator;
@@ -34,7 +35,7 @@ export class ProductCatalogGridPo extends BasePo {
   }
 
   private productCartButton(): ILocator {
-    return {value: this.page.locator(`//div[@class="note-list row"]//button[text()="${name}"]`), definition: `'Product Cart '${ButtonsEnum.Buy}' Button`};
+    return {value: this.page.locator(`//div[@class="note-list row"]//button[text()="${ButtonsEnum.Buy}"]`), definition: `'Product Cart '${ButtonsEnum.Buy}' Button`};
   }
 
   public async getProductItemElement(): Promise<Locator> {
@@ -45,18 +46,21 @@ export class ProductCatalogGridPo extends BasePo {
     return await ElementUtils.getTextByLocator(this.productName);
   }
 
-  public async getProductCartTitleNameTextList(countOfProducts: number): Promise<string[]> {
-    return await ElementUtils.getTextListByLocator(this.productName);
+  public async getProductCartTitleNameTextListByCountOfProducts(countOfProducts: number): Promise<string[]> {
+    const productNameTextList: string[] = await ElementUtils.getTextListByLocator(this.productName);
+
+    return ArrayUtils.getArrayValueBySlice(productNameTextList, 0, countOfProducts);
   }
 
   public async getProductCartPriceValue(): Promise<number> {
     return +StringUtils.getStringBySplit(await ElementUtils.getTextByLocator(this.productPrice), ' ');
   }
 
-  public async getProductCartPriceValueList(countOfProducts: number): Promise<number[]> {
-    const priceTextList: string[] = await ElementUtils.getTextListByLocator(this.productPrice);
+  public async getProductCartPriceValueListByCountOfProducts(countOfProducts: number): Promise<number[]> {
+    const productPriceTextList: string[] = await ElementUtils.getTextListByLocator(this.productPrice);
+    const productPriceValueList: number[] = productPriceTextList.map((price: string) => +StringUtils.getStringBySplit(price, ' '));
 
-    return priceTextList.map((price: string) => +StringUtils.getStringBySplit(price, ' '));
+    return ArrayUtils.getArrayValueBySlice(productPriceValueList, 0, countOfProducts);
   }
 
   public async clickOnBuyButtonInProductWithDiscount(): Promise<void> {

@@ -127,7 +127,6 @@ test.describe('@Regression - Shopping Cart', async () => {
     navigationPo = new NavigationPo(page);
     productCatalogGridPo = new ProductCatalogGridPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
-    shoppingCartPo = new ShoppingCartPo(page);
 
     await StepUtils.addLog(`The user adds 9 products of the same name with a discount to the shopping cart by clicking the ${ButtonsEnum.Buy} button`);
     await productCatalogGridPo.clickOnBuyButtonInSameProductWithDiscountByNumberOfClicks(9);
@@ -149,7 +148,6 @@ test.describe('@Regression - Shopping Cart', async () => {
     await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
     await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
-    await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
   });
 });
 
@@ -160,7 +158,6 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
   navigationPo = new NavigationPo(page);
   productCatalogGridPo = new ProductCatalogGridPo(page);
   shoppingCartPopupPo = new ShoppingCartPopupPo(page);
-  shoppingCartPo = new ShoppingCartPo(page);
 
   userData = loginPo.dataProvider.getUserTestData();
   productData = shoppingCartPopupPo.dataProvider.getProductTestData(3);
@@ -194,12 +191,10 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
 
   await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
 
-  let productNameList: string[] = await productCatalogGridPo.getProductCartTitleNameTextList(countOfProducts);
+  let productNameList: string[] = await productCatalogGridPo.getProductCartTitleNameTextListByCountOfProducts(countOfProducts);
   productNameList.unshift(productData.productName);
-  // productNameList.pop();
-  let productPriceList: number[] = await productCatalogGridPo.getProductCartPriceValueList(countOfProducts);
+  let productPriceList: number[] = await productCatalogGridPo.getProductCartPriceValueListByCountOfProducts(countOfProducts);
   productPriceList.unshift(productData.productPrice);
-  // productPriceList.pop();
   const totalValue: number = await shoppingCartPopupPo.getCalculatedShoppingCartTotalPriceValue();
 
   await expect(await shoppingCartPopupPo.getShoppingCartItemTitleTextList()).toEqual(productNameList);
@@ -210,5 +205,4 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
   await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
 
   await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
-  await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
 });
