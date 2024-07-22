@@ -2,7 +2,6 @@ import {LoginPo} from '../../../pages/login/login.po';
 import {ShoppingCartPopupPo} from '../../../pages/shoppingCart/shoppingCartPopup/shoppingCartPopup.po';
 import {expect, test} from '@playwright/test';
 import {IProductDataType, IUserDataType} from '../../../dataTypes/uiDataTypes/dataTypes';
-import {StepUtils} from '../../../helpers/stepUtils';
 import {ButtonsEnum} from '../../../enums/uiEnums/buttons.enum';
 import {StringUtils} from '../../../helpers/stringUtils';
 import {ApiLogin} from '../../../api/apiLogin/apiLogin';
@@ -32,17 +31,21 @@ test.describe('@Regression - Shopping Cart', async () => {
 
     userData = loginPo.dataProvider.getUserTestData();
 
-    await StepUtils.addLog(`Save to environment token and cookie`);
-    await apiLogin.saveToEnvTokenAndCookie();
+    await test.step(`Save to environment token and cookie`, async()=>{
+      await apiLogin.saveToEnvTokenAndCookie();
+    });
 
-    await StepUtils.addLog(`Clear Shopping cart`);
-    await apiShoppingCart.clearAllShoppingCartData();
+    await test.step(`Clear Shopping cart`, async()=>{
+      await apiShoppingCart.clearAllShoppingCartData();
+    });
 
-    await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
-    await loginPo.openLoginPage('/login');
+    await test.step(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`, async()=>{
+      await loginPo.openLoginPage('/login');
+    });
 
-    await StepUtils.addLog(`The user types the name '${userData.username}' and password '${userData.password}'`);
-    await loginPo.loginToNotepadStore(userData.username, userData.password);
+    await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async()=>{
+      await loginPo.loginToNotepadStore(userData.username, userData.password);
+    });
 
     await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
     await expect(await navigationPo.getShoppingCartIconElement()).toBeVisible();
@@ -56,13 +59,15 @@ test.describe('@Regression - Shopping Cart', async () => {
     navigationPo = new NavigationPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
 
-    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
-    await navigationPo.clickOnShoppingCartIcon();
+    await test.step(`The user clicks on the Shopping cart icon`, async() => {
+      await navigationPo.clickOnShoppingCartIcon();
+    });
 
     await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
-    await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    await test.step(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`, async() => {
+      await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    });
 
     await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
@@ -75,21 +80,24 @@ test.describe('@Regression - Shopping Cart', async () => {
 
     productData = shoppingCartPopupPo.dataProvider.getProductTestData();
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount '${productData.productName}'`);
-    await productCatalogGridPo.clickOnBuyButtonInProductWithoutDiscount();
+    await test.step(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart without discount '${productData.productName}'`, async() => {
+      await productCatalogGridPo.clickOnBuyButtonInProductWithoutDiscount();
+    });
 
     await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(1);
 
-    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
-    await navigationPo.clickOnShoppingCartIcon();
+    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+      await navigationPo.clickOnShoppingCartIcon();
+    });
 
     await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
     await expect(await shoppingCartPopupPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
     await expect(await shoppingCartPopupPo.getShoppingCartItemPriceValue()).toEqual(productData.productPrice);
     await expect(await shoppingCartPopupPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
-    await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    await test.step(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`, async()=>{
+      await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    });
 
     await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
     await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
@@ -103,21 +111,24 @@ test.describe('@Regression - Shopping Cart', async () => {
 
     productData = shoppingCartPopupPo.dataProvider.getProductTestData(2);
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart with discount '${productData.productName}'`);
-    await productCatalogGridPo.clickOnBuyButtonInProductWithDiscount();
+    await test.step(`The user clicks on the '${ButtonsEnum.Buy}' button in the product cart with discount '${productData.productName}'`, async()=>{
+      await productCatalogGridPo.clickOnBuyButtonInProductWithDiscount();
+    });
 
     await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(1);
 
-    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
-    await navigationPo.clickOnShoppingCartIcon();
+    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+      await navigationPo.clickOnShoppingCartIcon();
+    });
 
     await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
     await expect(await shoppingCartPopupPo.getShoppingCartItemTitleElement()).toHaveText(productData.productName);
     await expect(await shoppingCartPopupPo.getShoppingCartItemPriceValue()).toEqual(productData.productPrice);
     await expect(await shoppingCartPopupPo.getShoppingCartTotalPriceElement()).toHaveText(StringUtils.getStringFromValue(productData.productPrice));
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
-    await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    await test.step(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`, async()=>{
+      await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    });
 
     await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
     await expect(await shoppingCartPo.getShoppingCartTitleElement()).not.toContainText('Server Error');
@@ -128,13 +139,15 @@ test.describe('@Regression - Shopping Cart', async () => {
     productCatalogGridPo = new ProductCatalogGridPo(page);
     shoppingCartPopupPo = new ShoppingCartPopupPo(page);
 
-    await StepUtils.addLog(`The user adds 9 products of the same name with a discount to the shopping cart by clicking the ${ButtonsEnum.Buy} button`);
-    await productCatalogGridPo.clickOnBuyButtonInSameProductWithDiscountByNumberOfClicks(9);
+    await test.step(`The user adds 9 products of the same name with a discount to the shopping cart by clicking the ${ButtonsEnum.Buy} button`, async()=>{
+      await productCatalogGridPo.clickOnBuyButtonInSameProductWithDiscountByNumberOfClicks(9);
+    });
 
     await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(9);
 
-    await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
-    await navigationPo.clickOnShoppingCartIcon();
+    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+      await navigationPo.clickOnShoppingCartIcon();
+    });
 
     const totalValue: number = await shoppingCartPopupPo.getCalculatedShoppingCartTotalPriceValue();
 
@@ -144,8 +157,9 @@ test.describe('@Regression - Shopping Cart', async () => {
     await expect(await shoppingCartPopupPo.getShoppingCartItemPriceValue()).toEqual(await productCatalogGridPo.getProductCartPriceValue() * 9);
     await expect(await shoppingCartPopupPo.getShoppingCartTotalPriceValue()).toEqual(totalValue);
 
-    await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
-    await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    await test.step(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`, async()=>{
+      await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+    });
 
     await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
   });
@@ -162,32 +176,39 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
   userData = loginPo.dataProvider.getUserTestData();
   productData = shoppingCartPopupPo.dataProvider.getProductTestData(3);
 
-  await StepUtils.addLog(`Save to environment token and cookie`);
-  await apiLogin.saveToEnvTokenAndCookie();
+  await test.step(`Save to environment token and cookie`, async()=>{
+    await apiLogin.saveToEnvTokenAndCookie();
+  });
 
-  await StepUtils.addLog(`Clear Shopping cart`);
-  await apiShoppingCart.clearAllShoppingCartData();
+  await test.step(`Clear Shopping cart`, async()=>{
+    await apiShoppingCart.clearAllShoppingCartData();
+  });
 
-  await StepUtils.addLog(`Add a new product '${productData.productName}' to the Shopping cart`);
-  await apiShoppingCart.addProductToShoppingCart(productData);
+  await test.step(`Add a new product '${productData.productName}' to the Shopping cart`, async()=>{
+    await apiShoppingCart.addProductToShoppingCart(productData);
+  });
 
-  await StepUtils.addLog(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`);
-  await loginPo.openLoginPage('/login');
+  await test.step(`The user opens page by URL: ${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/login`, async()=>{
+    await loginPo.openLoginPage('/login');
+  });
 
-  await StepUtils.addLog(`The user types the name '${userData.username}' and password '${userData.password}'`);
-  await loginPo.loginToNotepadStore(userData.username, userData.password);
+  await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async()=>{
+    await loginPo.loginToNotepadStore(userData.username, userData.password);
+  });
 
   await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
   await expect(await navigationPo.getShoppingCartIconElement()).toBeVisible();
 
-  await StepUtils.addLog(`The user adds 8 items to the Shopping cart`);
   const countOfProducts: number = 8;
-  await productCatalogGridPo.clickOnBuyButtonInDifferentProductsByNumberOfClicks(countOfProducts);
+  await test.step(`The user adds '${countOfProducts}' items to the Shopping cart`, async()=>{
+    await productCatalogGridPo.clickOnBuyButtonInDifferentProductsByNumberOfClicks(countOfProducts);
+  });
 
   await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(9);
 
-  await StepUtils.addLog(`The user clicks on the Shopping cart icon`);
-  await navigationPo.clickOnShoppingCartIcon();
+  await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+    await navigationPo.clickOnShoppingCartIcon();
+  });
 
   await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
 
@@ -201,8 +222,9 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
   await expect(await shoppingCartPopupPo.getShoppingCartItemPriceValueList()).toEqual(productPriceList);
   await expect(await shoppingCartPopupPo.getShoppingCartTotalPriceValue()).toEqual(totalValue);
 
-  await StepUtils.addLog(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`);
-  await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+  await test.step(`The user clicks on the '${ButtonsEnum.GoToBasket}' button in the Shopping cart`, async()=>{
+    await shoppingCartPopupPo.clickOnShoppingCartButtonByName(ButtonsEnum.GoToBasket);
+  });
 
   await expect(await page.url()).toEqual(`${loginPo.dataProvider.getUrlTestData().uiNotesPointSchool}/basket`);
 });
