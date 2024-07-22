@@ -7,7 +7,7 @@
     "run-tests-by-tag-in-ui": "npx playwright test --ui --grep \"@Regression\"",
     "run-tests-by-tag-in-headless": "npx playwright test --grep \"@Regression\"",
     "show-report": "npx playwright show-report",
-    "run-tests-with-allure-report": "npx playwright test --grep \"@Login\" --reporter=allure-playwright",
+    "run-tests-with-allure-report": "npx playwright test --grep \"@Regression\" --reporter=allure-playwright",
     "generate-allure-report": "allure generate allure-results -o allure-report --clean",
     "open-allure-report": "allure open allure-report"
   },
