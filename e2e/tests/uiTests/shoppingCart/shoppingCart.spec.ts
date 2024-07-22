@@ -86,7 +86,7 @@ test.describe('@Regression - Shopping Cart', async () => {
       await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(1);
     });
 
-    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+    await test.step(`The user clicks on the Shopping cart icon`, async() => {
       await navigationPo.clickOnShoppingCartIcon();
 
       await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
@@ -117,7 +117,7 @@ test.describe('@Regression - Shopping Cart', async () => {
       await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(1);
     });
 
-    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+    await test.step(`The user clicks on the Shopping cart icon`, async() => {
       await navigationPo.clickOnShoppingCartIcon();
 
       await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
@@ -145,7 +145,7 @@ test.describe('@Regression - Shopping Cart', async () => {
       await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(9);
     });
 
-    await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+    await test.step(`The user clicks on the Shopping cart icon`, async() => {
       await navigationPo.clickOnShoppingCartIcon();
       const totalValue: number = await shoppingCartPopupPo.getCalculatedShoppingCartTotalPriceValue();
 
@@ -205,7 +205,7 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
     await expect(await navigationPo.getShoppingCartCountIconValue()).toEqual(9);
   });
 
-  await test.step(`The user clicks on the Shopping cart icon`, async()=>{
+  await test.step(`The user clicks on the Shopping cart icon`, async() => {
     await navigationPo.clickOnShoppingCartIcon();
 
     await expect(await shoppingCartPopupPo.getShoppingCartPopupElement()).toBeVisible();
