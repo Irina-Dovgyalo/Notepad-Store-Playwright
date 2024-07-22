@@ -43,7 +43,7 @@ test.describe('@Regression - Shopping Cart', async () => {
       await loginPo.openLoginPage('/login');
     });
 
-    await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async() => {
+    await test.step(`The user types the credentials and clicks the submit button`, async() => {
       await loginPo.loginToNotepadStore(userData.username, userData.password);
 
       await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
@@ -191,7 +191,7 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
     await loginPo.openLoginPage('/login');
   });
 
-  await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async() => {
+  await test.step(`The user types the credentials and clicks the submit button`, async() => {
     await loginPo.loginToNotepadStore(userData.username, userData.password);
 
     await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
