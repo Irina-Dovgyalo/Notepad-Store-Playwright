@@ -31,11 +31,11 @@ test.describe('@Regression - Shopping Cart', async () => {
 
     userData = loginPo.dataProvider.getUserTestData();
 
-    await test.step(`Save to environment token and cookie`, async()=>{
+    await test.step(`Save to environment token and cookie`, async() => {
       await apiLogin.saveToEnvTokenAndCookie();
     });
 
-    await test.step(`Clear Shopping cart`, async()=>{
+    await test.step(`Clear Shopping cart`, async() => {
       await apiShoppingCart.clearAllShoppingCartData();
     });
 
@@ -45,10 +45,10 @@ test.describe('@Regression - Shopping Cart', async () => {
 
     await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async() => {
       await loginPo.loginToNotepadStore(userData.username, userData.password);
-    });
 
-    await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
-    await expect(await navigationPo.getShoppingCartIconElement()).toBeVisible();
+      await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
+      await expect(await navigationPo.getShoppingCartIconElement()).toBeVisible();
+    });
   });
 
   test.afterEach(`The Notepad Store login page is closed`, async ({ page }) => {
@@ -175,11 +175,11 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
   userData = loginPo.dataProvider.getUserTestData();
   productData = shoppingCartPopupPo.dataProvider.getProductTestData(3);
 
-  await test.step(`Save to environment token and cookie`, async()=>{
+  await test.step(`Save to environment token and cookie`, async() => {
     await apiLogin.saveToEnvTokenAndCookie();
   });
 
-  await test.step(`Clear Shopping cart`, async()=>{
+  await test.step(`Clear Shopping cart`, async() => {
     await apiShoppingCart.clearAllShoppingCartData();
   });
 
@@ -191,7 +191,7 @@ test(`@Test-4 @Regression - The user can go to the Shopping Cart page with 9 dif
     await loginPo.openLoginPage('/login');
   });
 
-  await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async()=>{
+  await test.step(`The user types the name '${userData.username}' and password '${userData.password}'`, async() => {
     await loginPo.loginToNotepadStore(userData.username, userData.password);
 
     await expect(await productCatalogGridPo.getProductItemElement()).toBeVisible();
